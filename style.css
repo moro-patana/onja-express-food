@@ -2,7 +2,9 @@ html {
 	font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 	font-size: 16px;
 }
-
+body {
+	background-color: gray;
+}
 .header {
 	background-color: rgb(40, 136, 226);
 	height: 5px;
@@ -94,4 +96,24 @@ button:hover {
 button.served:hover {
 	background-color: hsl(8, 85%, 50%);
 	color: white;
+}
+
+.outer-modal {
+	display: none;
+	position: fixed;
+	top: 0;
+    left: 0;
+    justify-content: center;
+    align-items: center;
+	pointer-events: none;
+    transition: opacity 0.2s;
+}
+.inner-modal {
+	width: 300px;
+	height: auto;
+    background-color: aliceblue;
+	border-radius: 5px;
+	box-shadow: 3px 5px 10px 5px plum;
+	padding: 1rem;
+	justify-content: center;
 }
