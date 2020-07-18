@@ -10,6 +10,8 @@ const select = document.querySelector(`.select-form`);
 const size = document.querySelector(`input[type="radio"]`);
 const amount = document.querySelector(`#quantity`);
 const submitBtn = document.querySelector(`.submitOrder`);
+const detailsButton = document.querySelector(`.details`);
+const servedButton = document.querySelector(`.served`);
 
 
 const openModal = (event) => {
@@ -42,7 +44,7 @@ submitBtn.addEventListener(`click`, ($event) => {
         <div class="order" data-dish="${select.value}" data-size="${size.value}" data-amount="${amount.value}">
             <span class="title">${name.value}</span>
             <button class="details">Details</button>
-            <button class="served">Delete</button>
+            <button class="served">Delete order</button>
         </div>
     </div>`;
     
