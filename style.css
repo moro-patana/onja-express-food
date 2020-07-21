@@ -97,6 +97,7 @@ button.served:hover {
 
 .outer-modal {
 	display: grid;
+	grid-template-columns: 1fr;
 	background-color: rgba(195, 215, 245, 1);
 	position: fixed;
 	height: 100vh;
@@ -105,7 +106,6 @@ button.served:hover {
 	left: 0;
 	justify-content: center;
 	align-items: center;
-	/* Hide this modal until we need it */
 	opacity: 0;
 	pointer-events: none;
 	transition: opacity 0.2s;
@@ -115,16 +115,16 @@ button.served:hover {
 	pointer-events: all;
 }
 .inner-modal {
-	max-width: 600px;
-	min-width: 400px;
+	width: 300px;
+	width: 400px;
 	padding: 2rem;
 	border-radius: 5px;
 	min-height: 200px;
 	background: white;
 	transition: transform 0.2s;
 }
-.form-input {
-	width: 500px;
+form {
+	width: 300px;
 	height: 500px;
 	text-align: center;
 	background-color: hotpink;
@@ -132,3 +132,5 @@ button.served:hover {
 	border-radius: 10px;
 	box-shadow: 10px 5px 5px skyblue;
 }
+
+
