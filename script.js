@@ -1,93 +1,125 @@
-// Grab elements
-const container = document.querySelector(`.container`);
-const orderList = document.querySelector(`.order-list`);
-const btn = document.querySelector(`.add-order`);
+// // Grab elements
 const outerModal = document.querySelector(`.outer-modal`);
 const innerModal = document.querySelector(`.inner-modal`);
-const outerSecondModal = document.querySelector(`.outer-second-modal`);
-const innerSecondModal = document.querySelector(`.inner-second-modal`);
-const choices = document.querySelector(`.choices`);
-
-const form = document.querySelector(`.form-input`);
-const name = document.querySelector(`#name`);
-const select = document.querySelector(`.select-form`);
-const size = document.querySelector(`input[type="radio"]`);
-const amount = document.querySelector(`#quantity`);
-
-const submitBtn = document.querySelector(`.submitOrder`);
-const detailsButton = document.querySelector(`.details`);
-const servedButton = document.querySelector(`.served`);
+const addOrderBtn = document.querySelector(`button.add-order`);
+const orderForm = document.querySelector(`form`);
+const orderList = document.querySelector(`.order-list`);
+const order = document.querySelector(`.order`);
 
 
-// Add class to the outerModal and event listener
-
-const openModal = (event) => {
-    outerModal.classList.add('open');
+const addOrder = event => {
+    orderHTML = `
+    <form id="orderForm">
+        <p>Your name :</p>
+        <input
+            class="input-form"
+            type="text"
+            id="name"
+            name="name"
+            placeholder="Enter your name here"
+            required
+        />
+        <p>Please select your dish :</p>
+        <select name="dish" class="select-form" required>
+            <option value="romazava">Romazava</option>
+            <option value="koba">Koba</option>
+            <option value="ravitoto">Ravitoto</option>
+            <option value="mokary">Mokary</option>
+            <option value="achard">Achard</option>
+            <option value="masikita">Masikita</option>
+            <option value="sambos">Sambos</option>
+            <option value="mofo-baolina">Mofo baolina</option>
+            <option value="ranonapango">Ranonapango</option>
+        </select>
+        <p>Please select the size of your plate :</p>
+        <input type="radio" id="small" name="size" value="small" required />
+        <label for="small">Small</label><br />
+        <input type="radio" id="medium" name="size" value="medium" />
+        <label for="medium">Medium</label><br />
+        <input type="radio" id="large" name="size" value="large" />
+        <label for="large">Large</label><br />
+        <p>How many pieces do you want to order?</p>
+        <input
+            class="input-form"
+            type="number"
+            id="quantity"
+            name="amount"
+            placeholder="Enter a number here"
+            required
+        />
+        <button class="submitOrder" type="submit">Add this order</button>
+</form>
+`;
+    innerModal.innerHTML = orderHTML;
+    outerModal.classList.add(`open`);
 };
-btn.addEventListener('click', openModal);
 
-// Remove the class
-
-const closeModal = (e) => {
-    outerModal.classList.remove(`open`);
-};
-
-// Add an event listener to the outer modal to close it
-
-outerModal.addEventListener(`click`, event => {
-    const isOutside = !event.target.closest(`form`);
-      if (isOutside) {
+const handleCloseModal = event => {
+    const isOutside = !event.target.closest(`.inner-modal`);
+    if (isOutside) {
         outerModal.classList.remove(`open`);
-}
-});
-// We need to add an event listener to the window and remove the class to escape
+    }
+};
 
-window.addEventListener(`keydown`, event => {
+const handleEscapeKey = event => {
     if (event.key === `Escape`) {
-        outerModal.classList.remove(`open`);
-    }
-});
-
-
-submitBtn.addEventListener(`click`, ($event) => {
-    $event.preventDefault();
-    const myHTML = `
-    <div class="order-list">
-        <div class="order" data-dish="${select.value}" data-size="${size.value}" data-amount="${amount.value}">
-            <span class="title">${name.value}</span>
-            <button class="details">Details</button>
-            <button class="served">Delete order</button>
-        </div>
-    </div>`;
-    
-orderList.insertAdjacentHTML(`beforebegin`, myHTML);
-});
-
-// Listen to the detail button
-
-const handleDetailsBtn = (e) => {
-    const detailsButton = e.target;
-    const order = document.querySelector(`.order`);
-
-// grab the detail
-    if (e.target.matches('.details')) {
-        const name = order.dataset.name;
-        const select = order.dataset.select;
-        const size = order.dataset.size;
-        const amount = order.dataset.amount;
-        const myChoices = `
-            <h2>${name}</h2>
-            <p>${amount} ${size} ${select}</p>
-        `;
-        innerModal.innerHTML = myChoices;
-        outerModal.classList.add('open');
+        closeModal();
     }
 };
+const closeModal = event => {
+    outerModal.classList.remove(`open`);
+}
 
-// Listen to the delete order button
-window.addEventListener(`click`, e => {
-    if (e.target.matches(`.served`)) {
-        orderList.style.display = `none`;
+const handleSubmit = event => {
+    event.preventDefault();
+    if (event.target.matches(`#orderForm`)) {
+        const form = event.target;
+        const {name, dish, size, amount} = form;
+
+        //Create new order html
+        const myOrder = `
+        <div class="order" data-dish="${dish.value}" data-size="${size.value}" data-amount="${amount.value}">
+            <span class="title">
+                ${name.value}
+            </span>
+            <button class="details">Details</button>
+            <button class="delete">Delete order</button>
+        </div>
+`;
+      orderList.innerHTML += myOrder;
+      closeModal();
+      form.reset();
     }
+}
 
-});
+const showDetails = () => {
+  const {dish, size, amount} = order.dataset;
+  order.querySelector(`.title`).textContent;
+  const detailHTML = `
+  <h3>${name}</h3>
+  <h4>Order:</h4>
+  <h5>${amount} ${size} ${dish}</h5>
+  `; 
+  innerModal.innerHTML = detailHTML;
+  outerModal.classList.add(`open`);
+}
+const deleteOrder = order => {
+    order.remove()
+}
+const handleBtnClick = event => {
+  if (event.target.matches(`button.details`)) {
+      const order = event.target.closest(`.order`)
+      showDetails(order);
+  }
+  if (event.target.matches(`button.delete`)) {
+    const order = event.target.closest(`.order`);
+    deleteOrder(order);
+
+}
+};
+// Listeners
+window.addEventListener(`click`, handleBtnClick);
+window.addEventListener(`submit`, handleSubmit);
+window.addEventListener(`keydown`, handleEscapeKey);
+outerModal.addEventListener(`click`, handleCloseModal);
+addOrderBtn.addEventListener(`click`, addOrder);
